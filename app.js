@@ -13,6 +13,30 @@ const categories = [
   "视觉设计",
 ];
 
+const tenStarTail =
+  "作为 10 星训练，输入时不要只追求速度，还要保持专业词汇、英文缩写、数字、标点和完整句子的准确性。练习过程中要连续输入，不要频繁停顿回看；如果出现错字，先判断是看错、手指位置错、输入法选词错，还是标点习惯错。完成后要复盘速度、正确率和错误类型，把常错词单独记录，再进入下一轮。高难度文本的目的，是模拟真实项目文档、客户复盘、课程讲稿和后期交付说明，让打字训练更接近工作现场。";
+
+const tenStarTexts = {
+  editingInterview:
+    "A-roll 是主叙事画面，B-roll 用来补充信息；在采访剪辑中，J-cut 可以让下一段声音提前进入，画面切换会更自然。剪辑师需要先通看素材，标记观点、情绪、停顿和可用空镜，再判断哪一句保留、哪一句删掉，以及哪一段需要用空镜头覆盖。粗剪阶段不要急着加包装，先把人物表达的逻辑顺序搭起来：问题是什么，为什么重要，案例在哪里，结果如何验证。精剪阶段再处理口误、重复、长停顿和眼神跳动，让信息密度更稳定。遇到客户要求保留某一句话时，要判断它是否破坏节奏，如果破坏，就用字幕、插画、产品特写或现场画面缓冲。采访类视频最怕只剩好看的画面，却没有清楚的观点推进。导出前还要检查字幕断句、声音响度、画面色温、Logo 安全边距、封面截图和不同平台比例。优秀剪辑不是把素材堆满时间线，而是在有限时长里帮助观众更快理解人物、项目和价值。" + tenStarTail,
+  postProduction:
+    "调色时先做 primary correction，再做 secondary correction；如果肤色偏绿，可以微调 tint、saturation 和 hue。高级后期不是一上来套 LUT，而是先建立准确的技术基础：曝光是否稳定，白平衡是否统一，高光是否溢出，暗部是否丢失，肤色是否偏离自然范围。多机位素材要先匹配主机位，再统一对比度、饱和度和黑位，避免 A 机偏暖、B 机偏冷造成跳戏。声音部分同样重要，人声要放在主要位置，背景音乐只托住情绪，环境声和音效不能抢信息。课程视频还要注意字幕可读性，字号、行距、描边、位置都要适合手机屏幕。商业片导出前，需要分别检查 9:16、16:9、1:1 等版本，确认字幕没有被平台按钮遮挡，二维码没有压缩糊掉，品牌色没有明显偏差。后期流程越复杂，越需要规范命名、备份工程、保存母版和记录修改意见。真正专业的后期交付，不只是画面好看，而是让客户能顺利发布、投放、复盘和继续迭代。" + tenStarTail,
+  cameraJudgment:
+    "拍摄 4K 25fps 课程画面时，快门速度通常可以设为 1/50s；如果使用 f/1.8 拍半身口播，背景会更虚，但对焦容错更低。现场要同时考虑曝光、景深、人物动作和后期裁切空间。参数不是孤立决定的，光圈影响进光和虚化，快门影响运动模糊，ISO 影响亮度和噪点，焦距影响空间关系和人物透视。室内课程如果灯光不足，不能只盲目提高 ISO，而要先判断主光方向、补光强度和背景层次。人物站位也会影响画面，如果离背景太近，阴影会压在墙上，层次感会变差；如果离麦克风太远，环境声比例会上升。拍摄前要检查电池、存储卡、白平衡、音频电平、监看画面、录制格式和备份方案。拍摄中要留意人物眨眼、口误、手势、道具位置和课件切换。拍摄后要立刻备份素材，并确认每个机位、每条音轨、每个屏幕录制文件都能正常打开。综合参数判断的核心，是让技术选择服务内容表达。" + tenStarTail,
+  commercialReview:
+    "商业拍摄结束后，需要复盘客户目标、脚本执行、现场调度、素材完整度和成片转化效果。如果只评价画面好不好看，而不看信息是否传达、客户是否满意、投放数据是否提升，复盘就会失去意义。复盘第一步要回到需求：客户到底希望提升品牌认知、获取线索、促进成交，还是训练销售团队使用素材。第二步看脚本执行，开场是否足够明确，卖点是否按优先级出现，案例是否可信，行动提示是否清楚。第三步看现场管理，机位、灯光、收音、道具、场地、人员时间是否有冲突，是否出现等待、返工或遗漏镜头。第四步看后期交付，字幕、音乐、封面、比例、版本命名和修改记录是否规范。第五步看发布数据，完播率、点击率、咨询量、转化率是否有改善。好的复盘不是找人背锅，而是把经验沉淀成下次可执行的清单。商业项目越多，越要建立标准流程，让创意、执行和交付都能稳定复制。" + tenStarTail,
+  complexCourse:
+    "复杂课程录制通常包含讲师口播、屏幕录制、实操演示、案例素材和互动答疑。剪辑时要统一声音响度，标清章节节点，并用字幕强调关键术语，例如 exposure、timeline、keyframe 和 color grading。录制前需要先拆课程结构，确认每一节的目标、案例、素材包和操作步骤，避免讲师临场跳来跳去。录制中要同时关注讲师表情、屏幕内容、鼠标位置、快捷键提示和实操画面是否清晰。屏幕录制要保证分辨率足够，窗口不要频繁遮挡关键按钮，文件路径和个人信息需要提前隐藏。后期剪辑时，可以用章节标题、局部放大、重点标注和回放片段帮助学员理解，但包装不能喧宾夺主。课程交付还要检查片头片尾、目录命名、字幕错别字、声音噪声、案例授权和资料下载链接。学习型内容最重要的是清楚、稳定、可复习，不只是看起来高级。复杂课程的价值，来自讲解逻辑、操作细节和长期可用的学习体验。" + tenStarTail,
+  publishingVersions:
+    "同一条商业视频可以输出多个版本：15 秒信息流、30 秒讲解版、60 秒案例版和无字幕备份版。文件命名要标明比例、时长、语言、字幕状态和日期，例如 ad_9x16_30s_cn_sub_0609.mp4。投放版本管理的重点，是让不同渠道都能快速找到正确素材，避免把横版发到竖屏平台，或把无字幕版本误发给需要静音播放的广告位。制作前要先列出平台需求，包括尺寸、码率、封面、安全边距、首帧、标题字数和落地页链接。剪辑时要为每个版本保留核心卖点，但表达节奏可以不同：短版本先给痛点和结果，长版本补充场景、证据和行动提示。导出后要建立检查表，逐一确认字幕位置、Logo 清晰度、音乐版权、二维码可扫、产品信息准确和客户禁用词。投放后还要按版本记录数据，比较点击率、完播率、转化成本和评论反馈。版本越多，管理越不能靠记忆，必须靠命名规则、文件夹结构和复盘表。" + tenStarTail,
+  visualSystem:
+    "课程账号需要建立稳定的视觉系统，包括封面版式、标题层级、字幕样式、品牌色和案例截图规范。视觉统一不是为了好看而好看，而是降低识别成本，让学员一眼知道这是同一套教学内容。封面设计要先确认主体，再安排标题、辅助信息和品牌元素，文字不能压住人物五官，也不能和背景混成一片。字幕样式要保证手机端可读，字号不能太小，行距不能太挤，颜色要和画面保持足够对比。案例截图要统一边框、阴影、比例和标注方式，避免每节课像不同项目拼在一起。视觉系统还要考虑长期迭代，不能只适合一两张封面，而要能扩展到直播预告、课程目录、作业点评、社群海报和资料包。建立规范后，并不意味着所有内容都一模一样，而是在统一基础上保留变化空间。好的视觉设计会服务教学节奏，让信息更容易被看见、被理解、被记住，也让账号在长期发布中保持专业感。" + tenStarTail,
+  audioLighting:
+    "多人课程或圆桌访谈要提前规划收音方案：每个人使用独立麦克风，现场保留备份录音，后期按轨道清理噪声、平衡响度，并检查是否有喷麦、爆音、延迟和相位问题。复杂收音现场不能只靠相机内录，因为空间混响、空调声、桌面碰撞和多人抢话都会影响可用性。录制前要试录一段，让每位嘉宾按真实音量说话，再检查电平峰值、底噪和耳机监听。灯光也要配合收音和机位，主光不能挡住讲师看屏幕，补光不能让眼镜严重反光，背景光要提供层次但不能过亮。圆桌场景还要注意桌面道具、线缆走向、水杯位置和人物视线关系。后期处理时，不同人的音色和响度要统一，剪掉明显口误和长停顿，但不能把自然交流剪得过于机械。交付前要在手机、电脑和外放设备上分别试听，确认人声清晰、音乐不过量、字幕能辅助理解。声音和灯光稳定，观众才会把注意力放在内容本身。" + tenStarTail
+};
+
+const LINE_CHAR_LIMIT = 38;
+
 const bank = [
   { difficulty: 1, category: "拍摄基础", title: "基础术语", text: "光圈、快门、焦距、构图、剪辑、调色。" },
   { difficulty: 1, category: "相机参数", title: "相机词汇", text: "ISO、白平衡、曝光、对焦、镜头、景深。" },
@@ -59,11 +83,11 @@ const bank = [
   { difficulty: 9, category: "调色与声音", title: "声音层次", text: "后期声音至少要分清人声、音乐和环境声。人声要稳定在主要位置，音乐不能抢信息；必要时使用 EQ、压缩和降噪，让内容听起来更干净。" },
   { difficulty: 9, category: "直播与课程", title: "课程包装", text: "课程包装包含片头、章节标题、重点标注、案例回放和结尾复盘。包装不能喧宾夺主，应该帮助学员看懂结构，而不是分散注意力。" },
   { difficulty: 9, category: "设备与流程", title: "现场统筹", text: "拍摄现场要有人负责脚本、机位、灯光、收音、道具和时间。哪怕是小团队，也要明确谁检查电量、谁备份素材、谁和客户确认镜头。" },
-  { difficulty: 10, category: "剪辑基础", title: "采访剪辑", text: "A-roll 是主叙事画面，B-roll 用来补充信息；在采访剪辑中，J-cut 可以让下一段声音提前进入，画面切换会更自然。剪辑师需要判断哪一句保留、哪一句删掉，以及哪一段需要用空镜头覆盖。" },
-  { difficulty: 10, category: "调色与声音", title: "高级后期", text: "调色时先做 primary correction，再做 secondary correction；如果肤色偏绿，可以微调 tint、saturation 和 hue。导出前要检查高光是否溢出、暗部是否丢失、不同镜头之间的色温是否统一。" },
-  { difficulty: 10, category: "相机参数", title: "综合参数判断", text: "拍摄 4K 25fps 课程画面时，快门速度通常可以设为 1/50s；如果使用 f/1.8 拍半身口播，背景会更虚，但对焦容错更低。现场要同时考虑曝光、景深、人物动作和后期裁切空间。" },
-  { difficulty: 10, category: "商业拍摄", title: "商业项目复盘", text: "商业拍摄结束后，需要复盘客户目标、脚本执行、现场调度、素材完整度和成片转化效果。如果只评价画面好不好看，而不看信息是否传达、客户是否满意、投放数据是否提升，复盘就会失去意义。" },
-  { difficulty: 10, category: "直播与课程", title: "复杂课程录制", text: "复杂课程录制通常包含讲师口播、屏幕录制、实操演示、案例素材和互动答疑。剪辑时要统一声音响度，标清章节节点，并用字幕强调关键术语，例如 exposure、timeline、keyframe 和 color grading。" },
+  { difficulty: 10, category: "剪辑基础", title: "采访剪辑", text: tenStarTexts.editingInterview },
+  { difficulty: 10, category: "调色与声音", title: "高级后期", text: tenStarTexts.postProduction },
+  { difficulty: 10, category: "相机参数", title: "综合参数判断", text: tenStarTexts.cameraJudgment },
+  { difficulty: 10, category: "商业拍摄", title: "商业项目复盘", text: tenStarTexts.commercialReview },
+  { difficulty: 10, category: "直播与课程", title: "复杂课程录制", text: tenStarTexts.complexCourse },
   { difficulty: 1, category: "视觉设计", title: "画面词语", text: "明暗、色彩、线条、比例、留白、层次、质感。" },
   { difficulty: 1, category: "平台发布", title: "发布词语", text: "标题、封面、标签、合集、评论、完播率、转化。" },
   { difficulty: 1, category: "灯光与收音", title: "灯光词语", text: "主光、辅光、逆光、柔光、硬光、反光板。" },
@@ -91,9 +115,9 @@ const bank = [
   { difficulty: 9, category: "相机参数", title: "Log 与 LUT", text: "Log 画面保留更多后期空间，但原始观感会偏灰。LUT 可以快速建立风格，但不能替代基础校正；曝光、白平衡和肤色仍然要先处理。" },
   { difficulty: 9, category: "剪辑基础", title: "叙事剪辑", text: "叙事剪辑不是把素材按拍摄顺序摆上去，而是重新安排信息释放。先给问题，再给过程，最后给结果，观众会更容易跟住内容。" },
   { difficulty: 9, category: "商业拍摄", title: "客户沟通", text: "商业项目开拍前，要确认交付比例、成片时长、使用平台、参考风格、禁用元素和修改轮次。需求越早说清楚，现场和后期越少扯皮。" },
-  { difficulty: 10, category: "平台发布", title: "投放版本管理", text: "同一条商业视频可以输出多个版本：15 秒信息流、30 秒讲解版、60 秒案例版和无字幕备份版。文件命名要标明比例、时长、语言、字幕状态和日期，例如 ad_9x16_30s_cn_sub_0609.mp4。" },
-  { difficulty: 10, category: "视觉设计", title: "视觉统一", text: "课程账号需要建立稳定的视觉系统，包括封面版式、标题层级、字幕样式、品牌色和案例截图规范。视觉统一不是为了好看而好看，而是降低识别成本，让学员一眼知道这是同一套教学内容。" },
-  { difficulty: 10, category: "灯光与收音", title: "复杂收音现场", text: "多人课程或圆桌访谈要提前规划收音方案：每个人使用独立麦克风，现场保留备份录音，后期按轨道清理噪声、平衡响度，并检查是否有喷麦、爆音、延迟和相位问题。" },
+  { difficulty: 10, category: "平台发布", title: "投放版本管理", text: tenStarTexts.publishingVersions },
+  { difficulty: 10, category: "视觉设计", title: "视觉统一", text: tenStarTexts.visualSystem },
+  { difficulty: 10, category: "灯光与收音", title: "复杂收音现场", text: tenStarTexts.audioLighting },
 ];
 
 const state = {
@@ -104,6 +128,8 @@ const state = {
   timer: null,
   examEndsAt: null,
   finished: false,
+  isComposing: false,
+  compositionBaseValue: "",
 };
 
 const els = {
@@ -173,6 +199,8 @@ function bindEvents() {
   els.nextBtn.addEventListener("click", () => moveChapter(1));
   els.resetBtn.addEventListener("click", resetCurrent);
   els.typingInput.addEventListener("input", handleInput);
+  els.typingInput.addEventListener("compositionstart", handleCompositionStart);
+  els.typingInput.addEventListener("compositionend", handleCompositionEnd);
   els.clearHistoryBtn.addEventListener("click", clearHistory);
   els.modeBtns.forEach((button) => {
     button.addEventListener("click", () => updateMode(button.dataset.mode));
@@ -344,20 +372,23 @@ function renderPromptInfo() {
 
 function renderTarget(showFeedback) {
   if (!state.current) return;
-  const input = els.typingInput.value;
   const chars = [...state.current.text];
+  const inputChars = [...getEvaluationInput()];
+  const visibleRange = getVisibleRange(chars, inputChars.length);
+  const visibleChars = chars.slice(visibleRange.start, visibleRange.end);
 
   if (state.mode === "exam" || !showFeedback) {
-    els.targetText.textContent = state.current.text;
+    els.targetText.textContent = visibleChars.join("");
     return;
   }
 
-  els.targetText.innerHTML = chars
+  els.targetText.innerHTML = visibleChars
     .map((char, index) => {
+      const targetIndex = visibleRange.start + index;
       let className = "";
-      if (index < input.length) {
-        className = input[index] === char ? "correct" : "incorrect";
-      } else if (index === input.length) {
+      if (targetIndex < inputChars.length) {
+        className = inputChars[targetIndex] === char ? "correct" : "incorrect";
+      } else if (targetIndex === inputChars.length) {
         className = "current";
       }
       return `<span class="${className}">${escapeHtml(char)}</span>`;
@@ -365,12 +396,34 @@ function renderTarget(showFeedback) {
     .join("");
 }
 
+function getVisibleRange(chars, inputLength) {
+  if (!chars.length) return { start: 0, end: 0 };
+  const safeIndex = Math.min(inputLength, chars.length - 1);
+  const start = Math.floor(safeIndex / LINE_CHAR_LIMIT) * LINE_CHAR_LIMIT;
+  return { start, end: Math.min(chars.length, start + LINE_CHAR_LIMIT) };
+}
+
+function getEvaluationInput() {
+  return state.isComposing ? state.compositionBaseValue : els.typingInput.value;
+}
+
+function handleCompositionStart() {
+  state.isComposing = true;
+  state.compositionBaseValue = els.typingInput.value;
+}
+
+function handleCompositionEnd() {
+  state.isComposing = false;
+  state.compositionBaseValue = "";
+  handleInput();
+}
+
 function handleInput() {
   if (!state.current || state.finished) return;
   renderTarget(true);
   updateMetrics();
 
-  if (state.mode === "practice" && els.typingInput.value === state.current.text) {
+  if (!state.isComposing && state.mode === "practice" && els.typingInput.value === state.current.text) {
     finishSession("完成");
   }
 }
@@ -414,15 +467,17 @@ function finishSession(reason) {
 
 function calculateStats() {
   const target = state.current?.text ?? "";
-  const input = els.typingInput.value;
+  const input = getEvaluationInput();
+  const targetChars = [...target];
+  const inputChars = [...input];
   const elapsedSeconds = Math.max(1, Math.round((Date.now() - state.startedAt) / 1000));
   let errors = 0;
   let punctuationErrors = 0;
-  const length = Math.max(input.length, target.length);
+  const length = Math.max(inputChars.length, targetChars.length);
 
   for (let i = 0; i < length; i += 1) {
-    const expected = target[i] ?? "";
-    const actual = input[i] ?? "";
+    const expected = targetChars[i] ?? "";
+    const actual = inputChars[i] ?? "";
     if (actual !== expected) {
       errors += 1;
       if (isPunctuation(expected) || isPunctuation(actual)) {
@@ -431,10 +486,12 @@ function calculateStats() {
     }
   }
 
-  const correct = Math.max(0, target.length - errors);
-  const accuracy = target.length ? Math.max(0, Math.round((correct / target.length) * 100)) : 100;
-  const speed = Math.round((input.length / elapsedSeconds) * 60);
-  const progress = target.length ? Math.min(100, Math.round((input.length / target.length) * 100)) : 0;
+  const correct = Math.max(0, targetChars.length - errors);
+  const accuracy = targetChars.length ? Math.max(0, Math.round((correct / targetChars.length) * 100)) : 100;
+  const speed = Math.round((inputChars.length / elapsedSeconds) * 60);
+  const progress = targetChars.length
+    ? Math.min(100, Math.round((inputChars.length / targetChars.length) * 100))
+    : 0;
 
   return { elapsedSeconds, errors, punctuationErrors, accuracy, speed, progress };
 }

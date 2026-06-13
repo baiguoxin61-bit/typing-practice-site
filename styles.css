@@ -313,17 +313,20 @@ input[type="range"] {
 }
 
 .target-text {
-  min-height: 170px;
+  display: flex;
+  align-items: center;
+  min-height: 78px;
+  max-height: 78px;
   margin-bottom: 16px;
-  padding: 18px;
+  padding: 14px 18px;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #fbfcff;
-  font-size: 24px;
-  line-height: 1.9;
+  font-size: 26px;
+  line-height: 1.5;
   letter-spacing: 0;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .target-text span.correct {
@@ -356,14 +359,16 @@ input[type="range"] {
 }
 
 textarea {
-  min-height: 190px;
+  min-height: 74px;
+  height: 74px;
   margin-top: 8px;
-  padding: 16px;
-  resize: vertical;
+  padding: 14px 16px;
+  resize: none;
   font-size: 22px;
-  line-height: 1.8;
+  line-height: 1.55;
   letter-spacing: 0;
   caret-color: var(--blue);
+  overflow-y: auto;
 }
 
 textarea:focus {
