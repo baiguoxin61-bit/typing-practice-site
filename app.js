@@ -35,7 +35,7 @@ const tenStarTexts = {
     "多人课程或圆桌访谈要提前规划收音方案：每个人使用独立麦克风，现场保留备份录音，后期按轨道清理噪声、平衡响度，并检查是否有喷麦、爆音、延迟和相位问题。复杂收音现场不能只靠相机内录，因为空间混响、空调声、桌面碰撞和多人抢话都会影响可用性。录制前要试录一段，让每位嘉宾按真实音量说话，再检查电平峰值、底噪和耳机监听。灯光也要配合收音和机位，主光不能挡住讲师看屏幕，补光不能让眼镜严重反光，背景光要提供层次但不能过亮。圆桌场景还要注意桌面道具、线缆走向、水杯位置和人物视线关系。后期处理时，不同人的音色和响度要统一，剪掉明显口误和长停顿，但不能把自然交流剪得过于机械。交付前要在手机、电脑和外放设备上分别试听，确认人声清晰、音乐不过量、字幕能辅助理解。声音和灯光稳定，观众才会把注意力放在内容本身。" + tenStarTail
 };
 
-const LINE_CHAR_LIMIT = 38;
+const DEFAULT_LINE_CHAR_LIMIT = 24;
 
 const bank = [
   { difficulty: 1, category: "拍摄基础", title: "基础术语", text: "光圈、快门、焦距、构图、剪辑、调色。" },
@@ -201,6 +201,7 @@ function bindEvents() {
   els.typingInput.addEventListener("input", handleInput);
   els.typingInput.addEventListener("compositionstart", handleCompositionStart);
   els.typingInput.addEventListener("compositionend", handleCompositionEnd);
+  window.addEventListener("resize", () => renderTarget(Boolean(state.startedAt)));
   els.clearHistoryBtn.addEventListener("click", clearHistory);
   els.modeBtns.forEach((button) => {
     button.addEventListener("click", () => updateMode(button.dataset.mode));
@@ -372,9 +373,9 @@ function renderPromptInfo() {
 
 function renderTarget(showFeedback) {
   if (!state.current) return;
-  const chars = [...state.current.text];
+  const chars = [...getComparableTarget()];
   const inputChars = [...getEvaluationInput()];
-  const visibleRange = getVisibleRange(chars, inputChars.length);
+  const visibleRange = getVisibleRange(chars, inputChars.length, getLineCharLimit());
   const visibleChars = chars.slice(visibleRange.start, visibleRange.end);
 
   if (state.mode === "exam" || !showFeedback) {
@@ -396,15 +397,33 @@ function renderTarget(showFeedback) {
     .join("");
 }
 
-function getVisibleRange(chars, inputLength) {
+function getVisibleRange(chars, inputLength, lineCharLimit) {
   if (!chars.length) return { start: 0, end: 0 };
   const safeIndex = Math.min(inputLength, chars.length - 1);
-  const start = Math.floor(safeIndex / LINE_CHAR_LIMIT) * LINE_CHAR_LIMIT;
-  return { start, end: Math.min(chars.length, start + LINE_CHAR_LIMIT) };
+  const start = Math.floor(safeIndex / lineCharLimit) * lineCharLimit;
+  return { start, end: Math.min(chars.length, start + lineCharLimit) };
+}
+
+function getLineCharLimit() {
+  const styles = window.getComputedStyle(els.targetText);
+  const fontSize = parseFloat(styles.fontSize) || 24;
+  const paddingX = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+  const contentWidth = Math.max(0, els.targetText.clientWidth - paddingX);
+  const estimatedChineseCharWidth = fontSize * 1.06;
+  return Math.max(8, Math.floor(contentWidth / estimatedChineseCharWidth) || DEFAULT_LINE_CHAR_LIMIT);
 }
 
 function getEvaluationInput() {
-  return state.isComposing ? state.compositionBaseValue : els.typingInput.value;
+  const input = state.isComposing ? state.compositionBaseValue : els.typingInput.value;
+  return normalizeTypingText(input);
+}
+
+function getComparableTarget() {
+  return normalizeTypingText(state.current?.text ?? "");
+}
+
+function normalizeTypingText(text) {
+  return text.replace(/\s+/g, "");
 }
 
 function handleCompositionStart() {
@@ -423,7 +442,7 @@ function handleInput() {
   renderTarget(true);
   updateMetrics();
 
-  if (!state.isComposing && state.mode === "practice" && els.typingInput.value === state.current.text) {
+  if (!state.isComposing && state.mode === "practice" && getEvaluationInput() === getComparableTarget()) {
     finishSession("完成");
   }
 }
@@ -466,7 +485,7 @@ function finishSession(reason) {
 }
 
 function calculateStats() {
-  const target = state.current?.text ?? "";
+  const target = getComparableTarget();
   const input = getEvaluationInput();
   const targetChars = [...target];
   const inputChars = [...input];
