@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>影像键训 Studio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">摄影剪辑输入训练系统</p>
+          <h1>影像键训 Studio</h1>
+        </div>
+        <div class="mode-switch" role="tablist" aria-label="训练模式">
+          <button class="mode-btn active" data-mode="practice" role="tab" aria-selected="true">练习窗口</button>
+          <button class="mode-btn" data-mode="exam" role="tab" aria-selected="false">考试窗口</button>
+        </div>
+      </header>
+
+      <section class="workspace">
+        <aside class="control-panel" aria-label="训练设置">
+          <div class="field-group">
+            <label for="categorySelect">内容分类</label>
+            <select id="categorySelect">
+              <option value="">请选择内容分类</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label for="difficultyRange">难度星级</label>
+            <div class="difficulty-row">
+              <input id="difficultyRange" type="range" min="0" max="10" value="0" />
+              <strong id="difficultyLabel">请选择</strong>
+            </div>
+            <div id="starMeter" class="star-meter" aria-hidden="true"></div>
+          </div>
+
+          <div id="setupNotice" class="setup-notice" role="status">
+            请先选择难度星级和内容分类，再开始练习或考试。
+          </div>
+
+          <div id="examSettings" class="exam-settings" hidden>
+            <div class="field-group">
+              <label for="studentName">学员姓名</label>
+              <input id="studentName" type="text" placeholder="请输入姓名" autocomplete="off" />
+            </div>
+            <div class="field-group">
+              <label for="examDuration">考试时长</label>
+              <select id="examDuration">
+                <option value="60">1 分钟</option>
+                <option value="180" selected>3 分钟</option>
+                <option value="300">5 分钟</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-grid">
+            <button id="startBtn" class="primary-btn">开始</button>
+            <button id="submitBtn" class="exam-submit-btn" hidden>交卷</button>
+            <button id="prevBtn" class="ghost-btn">上一章</button>
+            <button id="nextBtn" class="ghost-btn">下一章</button>
+            <button id="resetBtn" class="ghost-btn">重来</button>
+          </div>
+
+          <div class="tip-box" id="modeTip">
+            练习窗口会实时标出错误，适合边打边改。
+          </div>
+        </aside>
+
+        <section class="typing-panel">
+          <div class="status-strip">
+            <div>
+              <span>模式</span>
+              <strong id="modeLabel">练习</strong>
+            </div>
+            <div>
+              <span>用时</span>
+              <strong id="timeMetric">00:00</strong>
+            </div>
+            <div>
+              <span>速度</span>
+              <strong id="speedMetric">0 字/分</strong>
+            </div>
+            <div>
+              <span>正确率</span>
+              <strong id="accuracyMetric">100%</strong>
+            </div>
+            <div>
+              <span>错误</span>
+              <strong id="errorMetric">0</strong>
+            </div>
+            <div>
+              <span>标点错</span>
+              <strong id="punctMetric">0</strong>
+            </div>
+          </div>
+
+          <div class="prompt-toolbar">
+            <div>
+              <p id="promptMeta">等待选择</p>
+              <h2 id="promptTitle">准备开始</h2>
+            </div>
+            <span id="examCountdown" class="countdown" hidden>03:00</span>
+          </div>
+
+          <div id="targetText" class="target-text" aria-label="目标文本">
+            请先在左侧选择难度星级和内容分类，系统会加载对应的影像行业训练段落。
+          </div>
+
+          <label class="input-label" for="typingInput">输入区</label>
+          <textarea
+            id="typingInput"
+            placeholder="点击开始后，在这里照着上方文本输入。"
+            spellcheck="false"
+            disabled
+          ></textarea>
+
+          <div class="progress-wrap" aria-label="完成进度">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+        </section>
+      </section>
+
+      <section class="results-band">
+        <div class="result-panel">
+          <div>
+            <p class="eyebrow">本次结果</p>
+            <h2 id="resultTitle">还没有成绩</h2>
+          </div>
+          <p id="resultText">完成一次练习或考试后，这里会显示速度、准确率和建议。</p>
+        </div>
+        <div class="history-panel">
+          <div class="history-header">
+            <h2>考试记录</h2>
+            <button id="clearHistoryBtn" class="text-btn">清空</button>
+          </div>
+          <ul id="historyList"></ul>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
