@@ -1,4 +1,5 @@
 const categories = [
+  "古文练习",
   "拍摄基础",
   "相机参数",
   "构图与运镜",
@@ -36,8 +37,315 @@ const tenStarTexts = {
 };
 
 const DEFAULT_LINE_CHAR_LIMIT = 24;
+const ARTICLE_VISIBLE_LINES = 2;
+
+const foundationLessons = {
+  single: {
+    label: "第 1 级 单键定位",
+    shortLabel: "单键",
+    hint: "不要看真实键盘。看屏幕上高亮的键位，只按下这一个键。",
+    instruction: "屏幕亮哪个键，就按哪个键。按对后自动进入下一题。",
+    sequence: ["f", "j", "d", "k", "s", "l", "a", ";", "'", ",", ".", "/", "[", "]", "{", "}", "r", "u", "e", "i", "w", "o", "q", "p"],
+  },
+  home: {
+    label: "第 2 级 基准键位",
+    shortLabel: "基准键",
+    hint: "左右手回到基准键：左手 A S D F，右手 J K L ;。按完每组后手指回位。",
+    instruction: "照着目标输入一组基准键，保持手指回到 F 和 J。",
+    sequence: "ff jj dd kk ss ll aa ;; fj dk sl af jkl; asdf fjdk slaf".split(" "),
+  },
+  rows: {
+    label: "第 3 级 上下排键",
+    shortLabel: "上下排",
+    hint: "从基准键出发，抬手到上排或下排，按完马上回到基准键。",
+    instruction: "根据屏幕目标输入上下排组合，先慢后稳。",
+    sequence: "fr ju de ki sw lo aq ;p fv jm dc k, sx l. az ;/ qwer uiop zxcv bnm".split(" "),
+  },
+  english: {
+    label: "第 4 级 简单英文",
+    shortLabel: "英文",
+    hint: "开始练短英文单词。眼睛看屏幕，手指按键后回位。",
+    instruction: "输入一个英文单词，按空格或完成单词后进入下一题。",
+    sequence: "film lens shot edit light sound color focus camera video timeline".split(" "),
+  },
+  pinyin: {
+    label: "第 5 级 简单拼音",
+    shortLabel: "拼音",
+    hint: "拼音阶段只练字母组合，不选汉字，先把声母韵母打熟。",
+    instruction: "输入屏幕上的拼音组合，注意 zh、ch、sh、ing、ong。",
+    sequence: "ba ma fa da ta na la ge ke he zhi chi shi an en ing ong guang quan jing tou".split(" "),
+  },
+  words: {
+    label: "第 6 级 汉字词组",
+    shortLabel: "词组",
+    hint: "现在开始使用中文输入法。先输入短词组，选词准确比速度重要。",
+    instruction: "用中文输入法输入这个词组。",
+    sequence: ["镜头", "光圈", "快门", "焦距", "构图", "剪辑", "调色", "收音", "字幕", "素材"],
+  },
+  phrases: {
+    label: "第 7 级 中文短语",
+    shortLabel: "短语",
+    hint: "短语阶段要注意词组连贯输入，减少频繁回看键盘。",
+    instruction: "用中文输入法输入这个短语。",
+    sequence: ["检查白平衡", "调整补光方向", "整理素材文件", "设置快门速度", "匹配画面色温", "导出字幕版本"],
+  },
+  sentences: {
+    label: "第 8 级 中文短句",
+    shortLabel: "短句",
+    hint: "短句阶段开始接近真实工作输入，注意标点和语义完整。",
+    instruction: "用中文输入法输入完整短句。",
+    sequence: [
+      "拍摄前要检查电池和存储卡。",
+      "画面偏蓝时可以先检查白平衡。",
+      "剪辑前要先整理素材和声音文件。",
+      "课程录制时要保证讲师声音清晰。",
+      "导出前需要检查字幕和封面尺寸。",
+    ],
+  },
+};
+
+const keyboardRows = [
+  [
+    { key: "`" },
+    { key: "1" },
+    { key: "2" },
+    { key: "3" },
+    { key: "4" },
+    { key: "5" },
+    { key: "6" },
+    { key: "7" },
+    { key: "8" },
+    { key: "9" },
+    { key: "0" },
+    { key: "-", label: "-" },
+    { key: "=", label: "=" },
+    { key: "BACKSPACE", label: "Backspace", size: 2 },
+  ],
+  [
+    { key: "TAB", label: "Tab", size: 1.5 },
+    { key: "Q" },
+    { key: "W" },
+    { key: "E" },
+    { key: "R" },
+    { key: "T" },
+    { key: "Y" },
+    { key: "U" },
+    { key: "I" },
+    { key: "O" },
+    { key: "P" },
+    { key: "[", label: "[ { 【" },
+    { key: "]", label: "] } 】" },
+    { key: "\\", label: "\\", size: 1.5 },
+  ],
+  [
+    { key: "CAPSLOCK", label: "Caps", size: 1.8 },
+    { key: "A" },
+    { key: "S" },
+    { key: "D" },
+    { key: "F" },
+    { key: "G" },
+    { key: "H" },
+    { key: "J" },
+    { key: "K" },
+    { key: "L" },
+    { key: ";", label: "; ；" },
+    { key: "'", label: "' “" },
+    { key: "ENTER", label: "Enter", size: 2.2 },
+  ],
+  [
+    { key: "SHIFT", label: "Shift", size: 2.4 },
+    { key: "Z" },
+    { key: "X" },
+    { key: "C" },
+    { key: "V" },
+    { key: "B" },
+    { key: "N" },
+    { key: "M" },
+    { key: ",", label: ", ，" },
+    { key: ".", label: ". 。" },
+    { key: "/", label: "/ ？" },
+    { key: "RSHIFT", label: "Shift", size: 2.8 },
+  ],
+  [
+    { key: "CTRL", label: "Ctrl", size: 1.4 },
+    { key: "OPTION", label: "Opt", size: 1.4 },
+    { key: "COMMAND", label: "Cmd", size: 1.6 },
+    { key: "SPACE", label: "Space", size: 6.8 },
+    { key: "RCOMMAND", label: "Cmd", size: 1.6 },
+    { key: "ROPTION", label: "Opt", size: 1.4 },
+  ],
+];
+
+const keyFingerMap = {
+  "`": "left-pinky",
+  1: "left-pinky",
+  2: "left-ring",
+  3: "left-middle",
+  4: "left-index",
+  5: "left-index",
+  6: "right-index",
+  7: "right-index",
+  8: "right-middle",
+  9: "right-ring",
+  0: "right-pinky",
+  "-": "right-pinky",
+  "=": "right-pinky",
+  Q: "left-pinky",
+  A: "left-pinky",
+  Z: "left-pinky",
+  W: "left-ring",
+  S: "left-ring",
+  X: "left-ring",
+  E: "left-middle",
+  D: "left-middle",
+  C: "left-middle",
+  R: "left-index",
+  F: "left-index",
+  V: "left-index",
+  T: "left-index",
+  G: "left-index",
+  B: "left-index",
+  Y: "right-index",
+  H: "right-index",
+  N: "right-index",
+  U: "right-index",
+  J: "right-index",
+  M: "right-index",
+  I: "right-middle",
+  K: "right-middle",
+  ",": "right-middle",
+  O: "right-ring",
+  L: "right-ring",
+  ".": "right-ring",
+  P: "right-pinky",
+  ";": "right-pinky",
+  "'": "right-pinky",
+  "[": "right-pinky",
+  "]": "right-pinky",
+  "\\": "right-pinky",
+  "/": "right-pinky",
+  SPACE: "left-thumb",
+};
+
+const foundationLessonOrder = Object.keys(foundationLessons);
+const directFoundationLessons = new Set(["single", "home", "rows", "english", "pinyin"]);
+const shiftSymbolHints = {
+  "~": { baseKey: "`", hint: "按住 Shift + `", shiftKey: "SHIFT" },
+  "!": { baseKey: "1", hint: "按住 Shift + 1", shiftKey: "SHIFT" },
+  "@": { baseKey: "2", hint: "按住 Shift + 2", shiftKey: "SHIFT" },
+  "#": { baseKey: "3", hint: "按住 Shift + 3", shiftKey: "SHIFT" },
+  "$": { baseKey: "4", hint: "按住 Shift + 4", shiftKey: "SHIFT" },
+  "%": { baseKey: "5", hint: "按住 Shift + 5", shiftKey: "SHIFT" },
+  "^": { baseKey: "6", hint: "按住 Shift + 6", shiftKey: "RSHIFT" },
+  "&": { baseKey: "7", hint: "按住 Shift + 7", shiftKey: "RSHIFT" },
+  "*": { baseKey: "8", hint: "按住 Shift + 8", shiftKey: "RSHIFT" },
+  "(": { baseKey: "9", hint: "按住 Shift + 9", shiftKey: "RSHIFT" },
+  ")": { baseKey: "0", hint: "按住 Shift + 0", shiftKey: "RSHIFT" },
+  "_": { baseKey: "-", hint: "按住 Shift + -", shiftKey: "RSHIFT" },
+  "+": { baseKey: "=", hint: "按住 Shift + =", shiftKey: "RSHIFT" },
+  "{": { baseKey: "[", hint: "按住 Shift + [", shiftKey: "RSHIFT" },
+  "}": { baseKey: "]", hint: "按住 Shift + ]", shiftKey: "RSHIFT" },
+  "|": { baseKey: "\\", hint: "按住 Shift + \\", shiftKey: "RSHIFT" },
+  ":": { baseKey: ";", hint: "按住 Shift + ;", shiftKey: "RSHIFT" },
+  '"': { baseKey: "'", hint: "按住 Shift + '", shiftKey: "RSHIFT" },
+  "<": { baseKey: ",", hint: "按住 Shift + ,", shiftKey: "RSHIFT" },
+  ">": { baseKey: ".", hint: "按住 Shift + .", shiftKey: "RSHIFT" },
+  "?": { baseKey: "/", hint: "按住 Shift + /", shiftKey: "RSHIFT" },
+};
+
+const symbolAliases = {
+  "；": ";",
+  "：": ";",
+  "“": "'",
+  "”": "'",
+  "‘": "'",
+  "’": "'",
+  "，": ",",
+  "、": ",",
+  "。": ".",
+  "《": ",",
+  "》": ".",
+  "【": "[",
+  "「": "[",
+  "『": "[",
+  "（": "[",
+  "(": "[",
+  "{": "[",
+  "】": "]",
+  "」": "]",
+  "』": "]",
+  "）": "]",
+  ")": "]",
+  "}": "]",
+  "？": "/",
+  "！": "1",
+};
+
+const classicalTexts = [
+  {
+    difficulty: 1,
+    category: "古文练习",
+    title: "陋室铭",
+    text: "山不在高，有仙则名。水不在深，有龙则灵。斯是陋室，惟吾德馨。苔痕上阶绿，草色入帘青。谈笑有鸿儒，往来无白丁。可以调素琴，阅金经。无丝竹之乱耳，无案牍之劳形。南阳诸葛庐，西蜀子云亭。孔子云：何陋之有？",
+  },
+  {
+    difficulty: 2,
+    category: "古文练习",
+    title: "爱莲说",
+    text: "水陆草木之花，可爱者甚蕃。晋陶渊明独爱菊。自李唐来，世人盛爱牡丹。予独爱莲之出淤泥而不染，濯清涟而不妖，中通外直，不蔓不枝，香远益清，亭亭净植，可远观而不可亵玩焉。予谓菊，花之隐逸者也；牡丹，花之富贵者也；莲，花之君子者也。噫！菊之爱，陶后鲜有闻。莲之爱，同予者何人？牡丹之爱，宜乎众矣。",
+  },
+  {
+    difficulty: 3,
+    category: "古文练习",
+    title: "小石潭记",
+    text: "从小丘西行百二十步，隔篁竹，闻水声，如鸣佩环，心乐之。伐竹取道，下见小潭，水尤清冽。全石以为底，近岸，卷石底以出，为坻，为屿，为嵁，为岩。青树翠蔓，蒙络摇缀，参差披拂。潭中鱼可百许头，皆若空游无所依。日光下澈，影布石上，佁然不动；俶尔远逝，往来翕忽，似与游者相乐。潭西南而望，斗折蛇行，明灭可见。其岸势犬牙差互，不可知其源。坐潭上，四面竹树环合，寂寥无人，凄神寒骨，悄怆幽邃。以其境过清，不可久居，乃记之而去。同游者：吴武陵，龚古，余弟宗玄。隶而从者，崔氏二小生：曰恕己，曰奉壹。",
+  },
+  {
+    difficulty: 4,
+    category: "古文练习",
+    title: "桃花源记",
+    text: "晋太元中，武陵人捕鱼为业。缘溪行，忘路之远近。忽逢桃花林，夹岸数百步，中无杂树，芳草鲜美，落英缤纷，渔人甚异之。复前行，欲穷其林。林尽水源，便得一山，山有小口，仿佛若有光。便舍船，从口入。初极狭，才通人。复行数十步，豁然开朗。土地平旷，屋舍俨然，有良田、美池、桑竹之属。阡陌交通，鸡犬相闻。其中往来种作，男女衣着，悉如外人。黄发垂髫，并怡然自乐。见渔人，乃大惊，问所从来。具答之。便要还家，设酒杀鸡作食。村中闻有此人，咸来问讯。自云先世避秦时乱，率妻子邑人来此绝境，不复出焉，遂与外人间隔。问今是何世，乃不知有汉，无论魏晋。此人一一为具言所闻，皆叹惋。余人各复延至其家，皆出酒食。停数日，辞去。此中人语云：不足为外人道也。既出，得其船，便扶向路，处处志之。及郡下，诣太守，说如此。太守即遣人随其往，寻向所志，遂迷，不复得路。南阳刘子骥，高尚士也。闻之，欣然规往。未果，寻病终，后遂无问津者。",
+  },
+  {
+    difficulty: 5,
+    category: "古文练习",
+    title: "兰亭集序",
+    text: "永和九年，岁在癸丑，暮春之初，会于会稽山阴之兰亭，修禊事也。群贤毕至，少长咸集。此地有崇山峻岭，茂林修竹；又有清流激湍，映带左右，引以为流觞曲水，列坐其次。虽无丝竹管弦之盛，一觞一咏，亦足以畅叙幽情。是日也，天朗气清，惠风和畅。仰观宇宙之大，俯察品类之盛，所以游目骋怀，足以极视听之娱，信可乐也。夫人之相与，俯仰一世。或取诸怀抱，悟言一室之内；或因寄所托，放浪形骸之外。虽趣舍万殊，静躁不同，当其欣于所遇，暂得于己，快然自足，不知老之将至；及其所之既倦，情随事迁，感慨系之矣。向之所欣，俯仰之间，已为陈迹，犹不能不以之兴怀。况修短随化，终期于尽。古人云：死生亦大矣。岂不痛哉！每览昔人兴感之由，若合一契，未尝不临文嗟悼，不能喻之于怀。固知一死生为虚诞，齐彭殇为妄作。后之视今，亦犹今之视昔，悲夫！故列叙时人，录其所述，虽世殊事异，所以兴怀，其致一也。后之览者，亦将有感于斯文。",
+  },
+  {
+    difficulty: 6,
+    category: "古文练习",
+    title: "醉翁亭记",
+    text: "环滁皆山也。其西南诸峰，林壑尤美。望之蔚然而深秀者，琅琊也。山行六七里，渐闻水声潺潺而泻出于两峰之间者，酿泉也。峰回路转，有亭翼然临于泉上者，醉翁亭也。作亭者谁？山之僧智仙也。名之者谁？太守自谓也。太守与客来饮于此，饮少辄醉，而年又最高，故自号曰醉翁也。醉翁之意不在酒，在乎山水之间也。山水之乐，得之心而寓之酒也。若夫日出而林霏开，云归而岩穴暝，晦明变化者，山间之朝暮也。野芳发而幽香，佳木秀而繁阴，风霜高洁，水落而石出者，山间之四时也。朝而往，暮而归，四时之景不同，而乐亦无穷也。至于负者歌于途，行者休于树，前者呼，后者应，伛偻提携，往来而不绝者，滁人游也。临溪而渔，溪深而鱼肥；酿泉为酒，泉香而酒洌；山肴野蔌，杂然而前陈者，太守宴也。宴酣之乐，非丝非竹，射者中，弈者胜，觥筹交错，起坐而喧哗者，众宾欢也。苍颜白发，颓然乎其间者，太守醉也。已而夕阳在山，人影散乱，太守归而宾客从也。树林阴翳，鸣声上下，游人去而禽鸟乐也。然而禽鸟知山林之乐，而不知人之乐；人知从太守游而乐，而不知太守之乐其乐也。醉能同其乐，醒能述以文者，太守也。太守谓谁？庐陵欧阳修也。",
+  },
+  {
+    difficulty: 7,
+    category: "古文练习",
+    title: "岳阳楼记",
+    text: "庆历四年春，滕子京谪守巴陵郡。越明年，政通人和，百废具兴。乃重修岳阳楼，增其旧制，刻唐贤今人诗赋于其上。属予作文以记之。予观夫巴陵胜状，在洞庭一湖。衔远山，吞长江，浩浩汤汤，横无际涯；朝晖夕阴，气象万千。此则岳阳楼之大观也，前人之述备矣。然则北通巫峡，南极潇湘，迁客骚人，多会于此，览物之情，得无异乎？若夫淫雨霏霏，连月不开；阴风怒号，浊浪排空；日星隐曜，山岳潜形；商旅不行，樯倾楫摧；薄暮冥冥，虎啸猿啼。登斯楼也，则有去国怀乡，忧谗畏讥，满目萧然，感极而悲者矣。至若春和景明，波澜不惊，上下天光，一碧万顷；沙鸥翔集，锦鳞游泳；岸芷汀兰，郁郁青青。而或长烟一空，皓月千里，浮光跃金，静影沉璧；渔歌互答，此乐何极！登斯楼也，则有心旷神怡，宠辱偕忘，把酒临风，其喜洋洋者矣。嗟夫！予尝求古仁人之心，或异二者之为，何哉？不以物喜，不以己悲。居庙堂之高则忧其民；处江湖之远则忧其君。是进亦忧，退亦忧。然则何时而乐耶？其必曰：先天下之忧而忧，后天下之乐而乐乎！噫！微斯人，吾谁与归？时六年九月十五日。",
+  },
+  {
+    difficulty: 8,
+    category: "古文练习",
+    title: "师说",
+    text: "古之学者必有师。师者，所以传道受业解惑也。人非生而知之者，孰能无惑？惑而不从师，其为惑也，终不解矣。生乎吾前，其闻道也固先乎吾，吾从而师之；生乎吾后，其闻道也亦先乎吾，吾从而师之。吾师道也，夫庸知其年之先后生于吾乎？是故无贵无贱，无长无少，道之所存，师之所存也。嗟乎！师道之不传也久矣！欲人之无惑也难矣！古之圣人，其出人也远矣，犹且从师而问焉；今之众人，其下圣人也亦远矣，而耻学于师。是故圣益圣，愚益愚，圣人之所以为圣，愚人之所以为愚，其皆出于此乎！爱其子，择师而教之；于其身也，则耻师焉，惑矣。彼童子之师，授之书而习其句读者，非吾所谓传其道解其惑者也。句读之不知，惑之不解，或师焉，或不焉，小学而大遗，吾未见其明也。巫医乐师百工之人，不耻相师；士大夫之族，曰师曰弟子云者，则群聚而笑之。问之，则曰：彼与彼年相若也，道相似也。位卑则足羞，官盛则近谀。呜呼！师道之不复可知矣。巫医乐师百工之人，君子不齿，今其智乃反不能及，其可怪也欤！圣人无常师。孔子师郯子、苌弘、师襄、老聃。郯子之徒，其贤不及孔子。孔子曰：三人行，则必有我师。是故弟子不必不如师，师不必贤于弟子，闻道有先后，术业有专攻，如是而已。李氏子蟠，年十七，好古文，六艺经传皆通习之，不拘于时，学于余。余嘉其能行古道，作师说以贻之。",
+  },
+  {
+    difficulty: 9,
+    category: "古文练习",
+    title: "出师表",
+    text: "先帝创业未半而中道崩殂，今天下三分，益州疲弊，此诚危急存亡之秋也。然侍卫之臣不懈于内，忠志之士忘身于外者，盖追先帝之殊遇，欲报之于陛下也。诚宜开张圣听，以光先帝遗德，恢弘志士之气；不宜妄自菲薄，引喻失义，以塞忠谏之路也。宫中府中，俱为一体，陟罚臧否，不宜异同。若有作奸犯科及为忠善者，宜付有司论其刑赏，以昭陛下平明之理，不宜偏私，使内外异法也。侍中侍郎郭攸之、费祎、董允等，此皆良实，志虑忠纯，是以先帝简拔以遗陛下。愚以为宫中之事，事无大小，悉以咨之，然后施行，必能裨补阙漏，有所广益。将军向宠，性行淑均，晓畅军事，试用于昔日，先帝称之曰能，是以众议举宠为督。愚以为营中之事，悉以咨之，必能使行阵和睦，优劣得所。亲贤臣，远小人，此先汉所以兴隆也；亲小人，远贤臣，此后汉所以倾颓也。先帝在时，每与臣论此事，未尝不叹息痛恨于桓、灵也。侍中、尚书、长史、参军，此悉贞良死节之臣，愿陛下亲之信之，则汉室之隆，可计日而待也。臣本布衣，躬耕于南阳，苟全性命于乱世，不求闻达于诸侯。先帝不以臣卑鄙，猥自枉屈，三顾臣于草庐之中，咨臣以当世之事，由是感激，遂许先帝以驱驰。后值倾覆，受任于败军之际，奉命于危难之间，尔来二十有一年矣。先帝知臣谨慎，故临崩寄臣以大事也。受命以来，夙夜忧叹，恐托付不效，以伤先帝之明。故五月渡泸，深入不毛。今南方已定，兵甲已足，当奖率三军，北定中原，庶竭驽钝，攘除奸凶，兴复汉室，还于旧都。此臣所以报先帝而忠陛下之职分也。至于斟酌损益，进尽忠言，则攸之、祎、允之任也。愿陛下托臣以讨贼兴复之效，不效则治臣之罪，以告先帝之灵。若无兴德之言，则责攸之、祎、允等之慢，以彰其咎。陛下亦宜自谋，以咨诹善道，察纳雅言，深追先帝遗诏。臣不胜受恩感激。今当远离，临表涕零，不知所言。",
+  },
+  {
+    difficulty: 10,
+    category: "古文练习",
+    title: "滕王阁序",
+    text: "豫章故郡，洪都新府。星分翼轸，地接衡庐。襟三江而带五湖，控蛮荆而引瓯越。物华天宝，龙光射牛斗之墟；人杰地灵，徐孺下陈蕃之榻。雄州雾列，俊采星驰。台隍枕夷夏之交，宾主尽东南之美。都督阎公之雅望，棨戟遥临；宇文新州之懿范，襜帷暂驻。十旬休假，胜友如云；千里逢迎，高朋满座。腾蛟起凤，孟学士之词宗；紫电青霜，王将军之武库。家君作宰，路出名区；童子何知，躬逢胜饯。时维九月，序属三秋。潦水尽而寒潭清，烟光凝而暮山紫。俨骖騑于上路，访风景于崇阿；临帝子之长洲，得天人之旧馆。层峦耸翠，上出重霄；飞阁流丹，下临无地。鹤汀凫渚，穷岛屿之萦回；桂殿兰宫，即冈峦之体势。披绣闼，俯雕甍，山原旷其盈视，川泽纡其骇瞩。闾阎扑地，钟鸣鼎食之家；舸舰弥津，青雀黄龙之舳。云销雨霁，彩彻区明。落霞与孤鹜齐飞，秋水共长天一色。渔舟唱晚，响穷彭蠡之滨；雁阵惊寒，声断衡阳之浦。遥襟甫畅，逸兴遄飞。爽籁发而清风生，纤歌凝而白云遏。睢园绿竹，气凌彭泽之樽；邺水朱华，光照临川之笔。四美具，二难并。穷睇眄于中天，极娱游于暇日。天高地迥，觉宇宙之无穷；兴尽悲来，识盈虚之有数。望长安于日下，目吴会于云间。地势极而南溟深，天柱高而北辰远。关山难越，谁悲失路之人？萍水相逢，尽是他乡之客。怀帝阍而不见，奉宣室以何年？嗟乎！时运不齐，命途多舛。冯唐易老，李广难封。屈贾谊于长沙，非无圣主；窜梁鸿于海曲，岂乏明时？所赖君子见机，达人知命。老当益壮，宁移白首之心？穷且益坚，不坠青云之志。酌贪泉而觉爽，处涸辙以犹欢。北海虽赊，扶摇可接；东隅已逝，桑榆非晚。孟尝高洁，空余报国之情；阮籍猖狂，岂效穷途之哭！勃，三尺微命，一介书生。无路请缨，等终军之弱冠；有怀投笔，慕宗悫之长风。舍簪笏于百龄，奉晨昏于万里。非谢家之宝树，接孟氏之芳邻。他日趋庭，叨陪鲤对；今晨捧袂，喜托龙门。杨意不逢，抚凌云而自惜；钟期既遇，奏流水以何惭？呜呼！胜地不常，盛筵难再。兰亭已矣，梓泽丘墟。临别赠言，幸承恩于伟饯；登高作赋，是所望于群公。敢竭鄙怀，恭疏短引。一言均赋，四韵俱成。请洒潘江，各倾陆海云尔。",
+  },
+];
 
 const bank = [
+  ...classicalTexts,
   { difficulty: 1, category: "拍摄基础", title: "基础术语", text: "光圈、快门、焦距、构图、剪辑、调色。" },
   { difficulty: 1, category: "相机参数", title: "相机词汇", text: "ISO、白平衡、曝光、对焦、镜头、景深。" },
   { difficulty: 1, category: "剪辑基础", title: "剪辑词汇", text: "素材、时间线、字幕、音乐、转场、导出。" },
@@ -120,7 +428,56 @@ const bank = [
   { difficulty: 10, category: "灯光与收音", title: "复杂收音现场", text: tenStarTexts.audioLighting },
 ];
 
+const supplementalArticleSeeds = {
+  拍摄基础: ["构图", "曝光", "景别", "机位", "运动", "主体", "背景", "现场记录"],
+  构图与运镜: ["三分法", "前景", "引导线", "推拉摇移", "节奏", "空间关系", "视觉重点", "镜头目的"],
+  灯光与收音: ["主光", "辅光", "轮廓光", "领夹麦", "底噪", "混响", "电平", "监听"],
+  剪辑基础: ["粗剪", "精剪", "时间线", "节奏点", "转场", "字幕", "音画同步", "导出检查"],
+  调色与声音: ["白平衡", "曝光校正", "肤色", "饱和度", "响度", "降噪", "均衡", "母版"],
+  短视频脚本: ["开场钩子", "痛点", "卖点", "案例", "镜头表", "口播", "行动提示", "复盘"],
+  商业拍摄: ["客户需求", "脚本确认", "产品卖点", "现场调度", "交付比例", "修改意见", "投放数据", "复盘"],
+  直播与课程: ["课件", "推流", "讲师", "屏幕录制", "互动", "章节", "回放", "作业点评"],
+  设备与流程: ["电池", "存储卡", "镜头", "稳定器", "备份", "命名", "工程文件", "交付清单"],
+  平台发布: ["标题", "封面", "标签", "合集", "首帧", "完播率", "点击率", "评论反馈"],
+  视觉设计: ["版式", "标题层级", "品牌色", "留白", "对比", "封面", "截图", "视觉规范"],
+};
+
+function makeSupplementalText(category, difficulty) {
+  const seeds = supplementalArticleSeeds[category] ?? ["目标", "流程", "检查", "复盘"];
+  const sentences = [
+    `${category}训练要先明确任务目标，再把操作步骤拆成可以检查的小环节。`,
+    `本级重点关注${seeds.slice(0, 3).join("、")}，输入时要保持词语准确，标点也不要忽略。`,
+    `练习过程中可以先慢一点，确认每个词都看清楚，再逐步提高连续输入速度。`,
+    `如果出现错误，要判断是看错文字、键位不熟，还是输入法选词不稳定。`,
+    `完成后建议复盘${seeds.slice(3, 6).join("、")}，把常错内容单独记录下来。`,
+    `高星级训练还要模拟真实工作场景，连续输入项目说明、执行要求和检查标准。`,
+    `当内容变长时，注意保持呼吸节奏，不要频繁停顿，也不要只追求速度而牺牲准确率。`,
+    `最终目标是让${category}相关术语、流程和判断方式都能稳定地输入出来。`,
+  ];
+  return sentences.slice(0, Math.min(sentences.length, Math.max(2, Math.ceil(difficulty / 2)))).join("");
+}
+
+function fillMissingArticlePrompts() {
+  categories
+    .filter((category) => category !== "古文练习")
+    .forEach((category) => {
+      for (let difficulty = 1; difficulty <= 10; difficulty += 1) {
+        const exists = bank.some((item) => item.category === category && item.difficulty === difficulty);
+        if (exists) continue;
+        bank.push({
+          difficulty,
+          category,
+          title: `${category}补充训练 ${difficulty}星`,
+          text: makeSupplementalText(category, difficulty),
+        });
+      }
+    });
+}
+
+fillMissingArticlePrompts();
+
 const state = {
+  activeView: "foundation",
   mode: "practice",
   current: null,
   currentIndex: -1,
@@ -130,9 +487,40 @@ const state = {
   finished: false,
   isComposing: false,
   compositionBaseValue: "",
+  comparableTarget: "",
+  comparableTargetChars: [],
+  foundation: {
+    lesson: "home",
+    index: 0,
+    correct: 0,
+    errors: 0,
+    started: false,
+    isComposing: false,
+    errorSignature: "",
+  },
 };
 
 const els = {
+  foundationView: document.querySelector("#foundationView"),
+  articleView: document.querySelector("#articleView"),
+  foundationLesson: document.querySelector("#foundationLesson"),
+  foundationStartBtn: document.querySelector("#foundationStartBtn"),
+  foundationResetBtn: document.querySelector("#foundationResetBtn"),
+  foundationTip: document.querySelector("#foundationTip"),
+  foundationGuide: document.querySelector("#foundationGuide"),
+  foundationInstruction: document.querySelector("#foundationInstruction"),
+  foundationLessonLabel: document.querySelector("#foundationLessonLabel"),
+  foundationProgressLabel: document.querySelector("#foundationProgressLabel"),
+  foundationCorrectLabel: document.querySelector("#foundationCorrectLabel"),
+  foundationErrorLabel: document.querySelector("#foundationErrorLabel"),
+  foundationHint: document.querySelector("#foundationHint"),
+  foundationTarget: document.querySelector("#foundationTarget"),
+  foundationInput: document.querySelector("#foundationInput"),
+  virtualKeyboard: document.querySelector("#virtualKeyboard"),
+  viewBtns: document.querySelectorAll("[data-view]"),
+  resultsBand: document.querySelector("#resultsBand"),
+  classicalQuickBtn: document.querySelector("#classicalQuickBtn"),
+  articleCategoryGuide: document.querySelector("#articleCategoryGuide"),
   categorySelect: document.querySelector("#categorySelect"),
   difficultyRange: document.querySelector("#difficultyRange"),
   difficultyLabel: document.querySelector("#difficultyLabel"),
@@ -163,7 +551,7 @@ const els = {
   resultText: document.querySelector("#resultText"),
   historyList: document.querySelector("#historyList"),
   clearHistoryBtn: document.querySelector("#clearHistoryBtn"),
-  modeBtns: document.querySelectorAll(".mode-btn"),
+  modeBtns: document.querySelectorAll(".article-mode-btn"),
 };
 
 function init() {
@@ -174,21 +562,41 @@ function init() {
     els.categorySelect.appendChild(option);
   });
 
-  for (let i = 0; i < 10; i += 1) {
-    els.starMeter.appendChild(document.createElement("span"));
-  }
+  renderDifficultyButtons();
 
   bindEvents();
+  renderKeyboard();
+  renderFoundationGuide();
+  renderArticleCategoryGuide();
+  updateFoundationLesson("single");
   updateDifficulty();
+  updateView("foundation");
   updateMode("practice");
   renderHistory();
 }
 
 function bindEvents() {
+  els.viewBtns.forEach((button) => {
+    button.addEventListener("click", () => updateView(button.dataset.view));
+  });
+  els.foundationLesson.addEventListener("change", () => updateFoundationLesson(els.foundationLesson.value));
+  els.foundationStartBtn.addEventListener("click", startFoundationPractice);
+  els.foundationResetBtn.addEventListener("click", resetFoundationPractice);
+  els.foundationInput.addEventListener("input", handleFoundationInput);
+  els.foundationInput.addEventListener("compositionstart", () => {
+    state.foundation.isComposing = true;
+  });
+  els.foundationInput.addEventListener("compositionend", () => {
+    state.foundation.isComposing = false;
+    handleFoundationInput();
+  });
+  window.addEventListener("keydown", handlePhysicalKeyDown);
+  window.addEventListener("keyup", handlePhysicalKeyUp);
   els.categorySelect.addEventListener("change", () => {
     resetChapterPosition();
     updateSetupNotice();
   });
+  els.classicalQuickBtn.addEventListener("click", selectClassicalPractice);
   els.difficultyRange.addEventListener("input", () => {
     resetChapterPosition();
     updateDifficulty();
@@ -206,6 +614,516 @@ function bindEvents() {
   els.modeBtns.forEach((button) => {
     button.addEventListener("click", () => updateMode(button.dataset.mode));
   });
+}
+
+function renderDifficultyButtons() {
+  els.starMeter.innerHTML = "";
+  for (let value = 1; value <= 10; value += 1) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "difficulty-chip";
+    button.dataset.difficulty = String(value);
+    button.textContent = `${value}`;
+    button.setAttribute("aria-label", `${value} 星难度`);
+    button.addEventListener("click", () => selectDifficulty(value));
+    els.starMeter.appendChild(button);
+  }
+}
+
+function selectDifficulty(value) {
+  if (!els.categorySelect.value) {
+    els.setupNotice.textContent = "请先点选上方内容分类，再选择难度。";
+    els.setupNotice.classList.remove("ready");
+    return;
+  }
+  const availableDifficulty = getAvailableDifficultyForCategory(els.categorySelect.value, value);
+  els.difficultyRange.value = String(availableDifficulty);
+  resetChapterPosition();
+  updateDifficulty();
+}
+
+function selectClassicalPractice() {
+  els.categorySelect.value = "古文练习";
+  els.difficultyRange.value = "7";
+  resetChapterPosition();
+  updateDifficulty();
+  updateSetupNotice();
+  els.setupNotice.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function selectArticleCategory(category, preferredDifficulty = Number(els.difficultyRange.value) || 1) {
+  els.categorySelect.value = category;
+  els.difficultyRange.value = String(getDefaultDifficultyForCategory(category, preferredDifficulty));
+  resetChapterPosition();
+  updateDifficulty();
+  updateSetupNotice();
+}
+
+function getAvailableDifficultyForCategory(category, preferredDifficulty) {
+  const available = bank
+    .filter((item) => item.category === category)
+    .map((item) => item.difficulty);
+  if (!available.length) return preferredDifficulty;
+  if (available.includes(preferredDifficulty)) return preferredDifficulty;
+  return available.reduce((best, current) => {
+    const bestDistance = Math.abs(best - preferredDifficulty);
+    const currentDistance = Math.abs(current - preferredDifficulty);
+    return currentDistance < bestDistance ? current : best;
+  }, available[0]);
+}
+
+function getDefaultDifficultyForCategory(category, preferredDifficulty) {
+  const difficulties = getDifficultiesForCategory(category);
+  if (!difficulties.length) return preferredDifficulty;
+  if (difficulties.includes(preferredDifficulty)) return preferredDifficulty;
+  return difficulties.reduce((best, current) => {
+    const bestDistance = Math.abs(best - preferredDifficulty);
+    const currentDistance = Math.abs(current - preferredDifficulty);
+    return currentDistance < bestDistance ? current : best;
+  }, difficulties[0]);
+}
+
+function renderArticleCategoryGuide() {
+  els.articleCategoryGuide.innerHTML = "";
+  categories.forEach((category) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "category-chip";
+    button.textContent = category;
+    button.addEventListener("click", () => selectArticleCategory(category));
+    els.articleCategoryGuide.appendChild(button);
+  });
+}
+
+function updateView(view) {
+  state.activeView = view;
+  els.foundationView.hidden = view !== "foundation";
+  els.articleView.hidden = view !== "article";
+  els.resultsBand.hidden = view !== "article";
+  els.viewBtns.forEach((button) => {
+    const active = button.dataset.view === view;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+
+  if (view === "foundation") {
+    stopTimer();
+    els.foundationInput.focus();
+  } else {
+    renderSelectedPrompt();
+  }
+}
+
+function updateFoundationLesson(lessonKey) {
+  state.foundation.lesson = lessonKey;
+  resetFoundationPractice(false);
+}
+
+function getFoundationLesson() {
+  return foundationLessons[state.foundation.lesson] ?? foundationLessons.home;
+}
+
+function usesDirectFoundationInput() {
+  return directFoundationLessons.has(state.foundation.lesson);
+}
+
+function syncFoundationInputMode() {
+  const directInput = usesDirectFoundationInput();
+  els.foundationInput.readOnly = directInput;
+  els.foundationInput.inputMode = directInput ? "none" : "text";
+  els.foundationInput.placeholder = directInput ? "直接按键盘，不用中文输入法" : "用中文输入法输入";
+}
+
+function startFoundationPractice() {
+  state.foundation.started = true;
+  state.foundation.index = 0;
+  state.foundation.correct = 0;
+  state.foundation.errors = 0;
+  state.foundation.errorSignature = "";
+  els.foundationInput.value = "";
+  els.foundationInput.disabled = false;
+  syncFoundationInputMode();
+  els.foundationInput.focus();
+  updateFoundationDisplay();
+}
+
+function resetFoundationPractice(focusInput = true) {
+  state.foundation.started = false;
+  state.foundation.index = 0;
+  state.foundation.correct = 0;
+  state.foundation.errors = 0;
+  state.foundation.errorSignature = "";
+  els.foundationInput.value = "";
+  els.foundationInput.disabled = true;
+  syncFoundationInputMode();
+  updateFoundationDisplay();
+  if (focusInput) els.foundationInput.focus();
+}
+
+function updateFoundationDisplay() {
+  const lesson = getFoundationLesson();
+  const target = lesson.sequence[state.foundation.index] ?? "";
+  const complete = state.foundation.index >= lesson.sequence.length;
+  const inputStatus = getFoundationInputStatus(target);
+  els.foundationLessonLabel.textContent = lesson.label;
+  els.foundationHint.textContent = complete ? "这组基础练习完成了，可以重来或切换课程。" : lesson.hint;
+  els.foundationInstruction.textContent = complete
+    ? "本级完成，切换到下一等级继续练。"
+    : getFoundationInstructionText(lesson, target, inputStatus);
+  els.foundationTip.textContent = state.foundation.started
+    ? "照着目标输入；按错会闪红，按对会推进到下一组。"
+    : "先把左右手食指放在 F 和 J，屏幕键盘会同步显示按下的键位。";
+  els.foundationTarget.textContent = target || "完成";
+  els.foundationProgressLabel.textContent = `${Math.min(state.foundation.index, lesson.sequence.length)}/${lesson.sequence.length}`;
+  els.foundationCorrectLabel.textContent = String(state.foundation.correct);
+  els.foundationErrorLabel.textContent = String(state.foundation.errors);
+  els.foundationInput.classList.toggle("has-error", Boolean(inputStatus.mismatch));
+  highlightTargetKeys(getNextFoundationKeys(target));
+  renderFoundationGuide();
+}
+
+function getFoundationInstructionText(lesson, target, inputStatus = getFoundationInputStatus(target)) {
+  if (inputStatus.mismatch) {
+    const expectedText = inputStatus.expected ? `应该输入 ${inputStatus.expected}` : "这里已经超出目标长度";
+    return `第 ${inputStatus.position} 个字符不对，${expectedText}。请按退格键修正后继续。`;
+  }
+  const nextChar = getNextFoundationCharacter(target);
+  const shiftHint = shiftSymbolHints[nextChar];
+  if (!shiftHint || !usesDirectFoundationInput()) return lesson.instruction;
+  return `${lesson.instruction} 当前符号 ${nextChar}：${shiftHint.hint}。`;
+}
+
+function handleFoundationInput() {
+  if (!state.foundation.started || state.foundation.isComposing) return;
+  const lesson = getFoundationLesson();
+  const target = lesson.sequence[state.foundation.index];
+  const input = normalizeFoundationInput(els.foundationInput.value);
+  if (!target || !input) return;
+  flashTypedKey(input[input.length - 1]);
+
+  const normalizedTarget = normalizeFoundationInput(target).toLowerCase();
+  if (!normalizedTarget.startsWith(input.toLowerCase())) {
+    recordFoundationError(input);
+    updateFoundationDisplay();
+    return;
+  }
+
+  state.foundation.errorSignature = "";
+
+  if (input.length < normalizeFoundationInput(target).length) {
+    updateFoundationDisplay();
+    return;
+  }
+
+  if (input.toLowerCase() === normalizeFoundationInput(target).toLowerCase()) {
+    completeFoundationItem();
+  }
+  updateFoundationDisplay();
+}
+
+function getNextFoundationCharacter(target) {
+  const lessonKey = state.foundation.lesson;
+  if (["words", "phrases", "sentences"].includes(lessonKey)) return "";
+  const inputStatus = getFoundationInputStatus(target);
+  const nextIndex = inputStatus.mismatch
+    ? inputStatus.position - 1
+    : normalizeFoundationInput(els.foundationInput.value).length;
+  return target[nextIndex] ?? "";
+}
+
+function getNextFoundationKeys(target) {
+  const char = getNextFoundationCharacter(target);
+  if (!char) return [];
+  const shiftHint = shiftSymbolHints[char];
+  if (shiftHint) return [shiftHint.shiftKey, shiftHint.baseKey];
+  return [normalizeKeyboardCharacter(char)];
+}
+
+function normalizeFoundationInput(value) {
+  return [...value.replace(/\s+/g, "")].map(normalizeKeyboardCharacter).join("");
+}
+
+function normalizeKeyboardCharacter(char) {
+  if (!char) return "";
+  return symbolAliases[char] ?? char;
+}
+
+function completeFoundationItem() {
+  const lesson = getFoundationLesson();
+  state.foundation.correct += 1;
+  state.foundation.index += 1;
+  state.foundation.errorSignature = "";
+  els.foundationInput.value = "";
+  flashFoundationInput("correct");
+  if (state.foundation.index >= lesson.sequence.length) {
+    state.foundation.started = false;
+    els.foundationInput.disabled = true;
+  }
+}
+
+function flashFoundationInput(type) {
+  els.foundationInput.classList.remove("correct-flash", "incorrect-flash");
+  window.requestAnimationFrame(() => {
+    els.foundationInput.classList.add(type === "correct" ? "correct-flash" : "incorrect-flash");
+  });
+}
+
+function renderKeyboard() {
+  els.virtualKeyboard.innerHTML = "";
+  keyboardRows.forEach((row) => {
+    const rowEl = document.createElement("div");
+    rowEl.className = "keyboard-row";
+    row.forEach((keyInfo) => {
+      const key = keyInfo.key;
+      const keyEl = document.createElement("div");
+      keyEl.className = key === "SPACE" ? "keyboard-key space-key" : "keyboard-key";
+      keyEl.dataset.key = key;
+      keyEl.dataset.finger = keyFingerMap[key] ?? "";
+      keyEl.style.setProperty("--key-size", String(keyInfo.size ?? 1));
+      keyEl.textContent = keyInfo.label ?? (key === "SPACE" ? "Space" : key);
+      rowEl.appendChild(keyEl);
+    });
+    els.virtualKeyboard.appendChild(rowEl);
+  });
+}
+
+function renderFoundationGuide() {
+  els.foundationGuide.innerHTML = "";
+  foundationLessonOrder.forEach((lessonKey, index) => {
+    const lesson = foundationLessons[lessonKey];
+    const item = document.createElement("li");
+    item.tabIndex = 0;
+    item.setAttribute("role", "button");
+    item.classList.toggle("active", lessonKey === state.foundation.lesson);
+    item.classList.toggle("done", foundationLessonOrder.indexOf(state.foundation.lesson) > index);
+    item.textContent = lesson.label;
+    item.addEventListener("click", () => {
+      els.foundationLesson.value = lessonKey;
+      updateFoundationLesson(lessonKey);
+    });
+    item.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      els.foundationLesson.value = lessonKey;
+      updateFoundationLesson(lessonKey);
+    });
+    els.foundationGuide.appendChild(item);
+  });
+}
+
+function handlePhysicalKeyDown(event) {
+  const key = normalizeKey(event.key, event.code);
+  if (!key) return;
+  setKeyPressed(key, true);
+  if (handleDirectFoundationKey(key, event)) return;
+  handleSingleKeyFoundation(key, event);
+}
+
+function handlePhysicalKeyUp(event) {
+  const key = normalizeKey(event.key, event.code);
+  if (!key) return;
+  setKeyPressed(key, false);
+}
+
+function normalizeKey(key, code = "") {
+  const codeKey = normalizeKeyCode(code);
+  if (codeKey) return codeKey;
+  if (key === " ") return "SPACE";
+  if (key === "Backspace") return "BACKSPACE";
+  if (key === "Tab") return "TAB";
+  if (key === "Enter") return "ENTER";
+  if (key === "CapsLock") return "CAPSLOCK";
+  if (key === "Shift") return "SHIFT";
+  if (key === "Control") return "CTRL";
+  if (key === "Alt") return "OPTION";
+  if (key === "Meta") return "COMMAND";
+  if (key.length === 1) {
+    const normalized = normalizeKeyboardCharacter(key);
+    return /[a-z]/i.test(normalized) ? normalized.toUpperCase() : normalized;
+  }
+  return "";
+}
+
+function normalizeKeyCode(code) {
+  const codeMap = {
+    Backquote: "`",
+    Digit1: "1",
+    Digit2: "2",
+    Digit3: "3",
+    Digit4: "4",
+    Digit5: "5",
+    Digit6: "6",
+    Digit7: "7",
+    Digit8: "8",
+    Digit9: "9",
+    Digit0: "0",
+    Minus: "-",
+    Equal: "=",
+    Backspace: "BACKSPACE",
+    Tab: "TAB",
+    BracketLeft: "[",
+    BracketRight: "]",
+    Backslash: "\\",
+    CapsLock: "CAPSLOCK",
+    Semicolon: ";",
+    Quote: "'",
+    Enter: "ENTER",
+    ShiftLeft: "SHIFT",
+    ShiftRight: "RSHIFT",
+    Comma: ",",
+    Period: ".",
+    Slash: "/",
+    ControlLeft: "CTRL",
+    AltLeft: "OPTION",
+    MetaLeft: "COMMAND",
+    Space: "SPACE",
+    MetaRight: "RCOMMAND",
+    AltRight: "ROPTION",
+    ControlRight: "RCTRL",
+  };
+  if (codeMap[code]) return codeMap[code];
+  if (/^Key[A-Z]$/.test(code)) return code.slice(3);
+  return "";
+}
+
+function handleDirectFoundationKey(key, event) {
+  if (!state.foundation.started || !usesDirectFoundationInput()) return false;
+  if (state.activeView !== "foundation") return false;
+  if (event.metaKey || event.ctrlKey || event.altKey) return false;
+  if (key.length > 1 && key !== "SPACE" && key !== "BACKSPACE") return false;
+
+  event.preventDefault();
+
+  if (key === "BACKSPACE") {
+    els.foundationInput.value = [...els.foundationInput.value].slice(0, -1).join("");
+    state.foundation.errorSignature = "";
+    updateFoundationDisplay();
+    return true;
+  }
+
+  const typedChar = key === "SPACE" ? " " : key.toLowerCase();
+  els.foundationInput.value += typedChar;
+  flashTypedKey(typedChar);
+  evaluateDirectFoundationInput();
+  return true;
+}
+
+function evaluateDirectFoundationInput() {
+  const target = getFoundationLesson().sequence[state.foundation.index];
+  const input = normalizeFoundationInput(els.foundationInput.value).toLowerCase();
+  const normalizedTarget = normalizeFoundationInput(target ?? "").toLowerCase();
+  if (!normalizedTarget || !input) return;
+
+  if (!normalizedTarget.startsWith(input)) {
+    recordFoundationError(input);
+    updateFoundationDisplay();
+    return;
+  }
+
+  state.foundation.errorSignature = "";
+
+  if (input.length >= normalizedTarget.length && input === normalizedTarget) {
+    completeFoundationItem();
+  }
+  updateFoundationDisplay();
+}
+
+function recordFoundationError(signature) {
+  if (state.foundation.errorSignature !== signature) {
+    state.foundation.errors += 1;
+    state.foundation.errorSignature = signature;
+  }
+  flashFoundationInput("incorrect");
+}
+
+function getFoundationInputStatus(target) {
+  const normalizedTarget = normalizeFoundationInput(target ?? "").toLowerCase();
+  const normalizedInput = normalizeFoundationInput(els.foundationInput.value).toLowerCase();
+  if (!normalizedTarget || !normalizedInput) return { mismatch: false };
+
+  const maxComparable = Math.min(normalizedInput.length, normalizedTarget.length);
+  for (let index = 0; index < maxComparable; index += 1) {
+    if (normalizedInput[index] !== normalizedTarget[index]) {
+      return {
+        mismatch: true,
+        position: index + 1,
+        expected: target[index] ?? "",
+      };
+    }
+  }
+
+  if (normalizedInput.length > normalizedTarget.length) {
+    return {
+      mismatch: true,
+      position: normalizedTarget.length + 1,
+      expected: "",
+    };
+  }
+
+  return { mismatch: false };
+}
+
+function handleSingleKeyFoundation(key, event) {
+  if (!state.foundation.started || state.foundation.lesson !== "single") return;
+  const target = normalizeKeyboardCharacter(getFoundationLesson().sequence[state.foundation.index] ?? "");
+  const normalizedTarget = /[a-z]/i.test(target) ? target.toUpperCase() : target;
+  if (!target) return;
+  if (key.length > 1 && key !== "SPACE") return;
+  event.preventDefault();
+  if (key === normalizedTarget) {
+    completeFoundationItem();
+    updateFoundationDisplay();
+    return;
+  }
+  if (key.length === 1 || key === "SPACE") {
+    state.foundation.errors += 1;
+    flashFoundationInput("incorrect");
+    updateFoundationDisplay();
+  }
+}
+
+function setKeyPressed(key, pressed) {
+  const keyEl = findKeyElement(key);
+  if (!keyEl) return;
+  keyEl.classList.toggle("pressed", pressed);
+  const finger = keyEl.dataset.finger;
+  if (finger) {
+    document.querySelectorAll(`.finger[data-finger="${finger}"]`).forEach((el) => {
+      el.classList.toggle("active", pressed);
+    });
+  }
+}
+
+function flashTypedKey(char) {
+  const normalized = normalizeKeyboardCharacter(char);
+  const key = normalized === " " ? "SPACE" : /[a-z]/i.test(normalized) ? normalized.toUpperCase() : normalized;
+  const keyEl = findKeyElement(key);
+  if (!keyEl) return;
+  keyEl.classList.remove("typed");
+  window.requestAnimationFrame(() => {
+    keyEl.classList.add("typed");
+    window.setTimeout(() => keyEl.classList.remove("typed"), 220);
+  });
+}
+
+function highlightTargetKeys(targetKeys) {
+  els.virtualKeyboard.querySelectorAll(".target").forEach((key) => key.classList.remove("target"));
+  document.querySelectorAll(".finger.target").forEach((finger) => finger.classList.remove("target"));
+  targetKeys.forEach((char) => {
+    const normalized = normalizeKeyboardCharacter(char);
+    const key = normalized === " " ? "SPACE" : /[a-z]/i.test(normalized) ? normalized.toUpperCase() : normalized;
+    const keyEl = findKeyElement(key);
+    if (!keyEl) return;
+    keyEl.classList.add("target");
+    const finger = keyEl.dataset.finger;
+    if (finger) {
+      document.querySelectorAll(`.finger[data-finger="${finger}"]`).forEach((el) => el.classList.add("target"));
+    }
+  });
+}
+
+function findKeyElement(key) {
+  return [...els.virtualKeyboard.querySelectorAll(".keyboard-key")].find((el) => el.dataset.key === key);
 }
 
 function resetChapterPosition() {
@@ -238,10 +1156,27 @@ function updateMode(mode) {
 function updateDifficulty() {
   const value = Number(els.difficultyRange.value);
   els.difficultyLabel.textContent = value > 0 ? `${value} 星` : "请选择";
-  [...els.starMeter.children].forEach((star, index) => {
-    star.classList.toggle("active", index < value);
-  });
+  updateDifficultyButtons();
   updateSetupNotice();
+}
+
+function updateDifficultyButtons() {
+  const selectedDifficulty = Number(els.difficultyRange.value);
+  const selectedCategory = els.categorySelect.value;
+  const availableDifficulties = getDifficultiesForCategory(selectedCategory);
+  els.starMeter.querySelectorAll(".difficulty-chip").forEach((button) => {
+    const difficulty = Number(button.dataset.difficulty);
+    const available = !selectedCategory || availableDifficulties.includes(difficulty);
+    button.classList.toggle("active", difficulty === selectedDifficulty);
+    button.classList.toggle("unavailable", Boolean(selectedCategory) && !available);
+    button.disabled = Boolean(selectedCategory) && !available;
+    button.title = available ? `${difficulty} 星` : "该类目暂未配置此星级内容";
+  });
+}
+
+function getDifficultiesForCategory(category) {
+  if (!category) return [];
+  return [...new Set(bank.filter((item) => item.category === category).map((item) => item.difficulty))].sort((a, b) => a - b);
 }
 
 function startSession() {
@@ -290,14 +1225,22 @@ function resetCurrent() {
 function getCandidates() {
   const difficulty = Number(els.difficultyRange.value);
   const category = els.categorySelect.value;
-  let candidates = bank.filter((item) => item.difficulty === difficulty);
-  if (category) {
-    candidates = candidates.filter((item) => item.category === category);
-  }
+  const categoryPool = category ? bank.filter((item) => item.category === category) : bank;
+  let candidates = categoryPool.filter((item) => item.difficulty === difficulty);
   if (!candidates.length) {
-    candidates = bank.filter((item) => Math.abs(item.difficulty - difficulty) <= 1);
+    const nearestDifficulty = getNearestDifficulty(categoryPool, difficulty);
+    candidates = categoryPool.filter((item) => item.difficulty === nearestDifficulty);
   }
   return candidates;
+}
+
+function getNearestDifficulty(items, preferredDifficulty) {
+  if (!items.length) return preferredDifficulty;
+  return items.reduce((best, item) => {
+    const bestDistance = Math.abs(best - preferredDifficulty);
+    const currentDistance = Math.abs(item.difficulty - preferredDifficulty);
+    return currentDistance < bestDistance ? item.difficulty : best;
+  }, items[0].difficulty);
 }
 
 function moveChapter(direction) {
@@ -305,7 +1248,7 @@ function moveChapter(direction) {
   const candidates = getCandidates();
   if (!candidates.length) return;
   state.currentIndex = (state.currentIndex + direction + candidates.length) % candidates.length;
-  state.current = candidates[state.currentIndex];
+  setCurrentPrompt(candidates[state.currentIndex]);
   stopTimer();
   state.finished = false;
   state.startedAt = null;
@@ -322,12 +1265,18 @@ function moveChapter(direction) {
 function selectCurrentPrompt() {
   const candidates = getCandidates();
   state.currentIndex = state.currentIndex < 0 ? 0 : state.currentIndex % candidates.length;
-  state.current = candidates[state.currentIndex];
+  setCurrentPrompt(candidates[state.currentIndex]);
+}
+
+function setCurrentPrompt(prompt) {
+  state.current = prompt;
+  state.comparableTarget = normalizeTypingText(prompt?.text ?? "");
+  state.comparableTargetChars = [...state.comparableTarget];
 }
 
 function renderSelectedPrompt() {
   if (!validateSetup(false)) {
-    state.current = null;
+    setCurrentPrompt(null);
     els.promptMeta.textContent = "等待选择";
     els.promptTitle.textContent = "准备开始";
     els.targetText.textContent = "请先在左侧选择难度星级和内容分类，系统会加载对应的影像行业训练段落。";
@@ -358,6 +1307,7 @@ function validateSetup(showMessage = true) {
 function updateSetupNotice() {
   if (!els.setupNotice) return;
   const ready = Number(els.difficultyRange.value) > 0 && Boolean(els.categorySelect.value);
+  updateArticleCategoryGuideState();
   els.setupNotice.classList.toggle("ready", ready);
   els.setupNotice.textContent = ready
     ? "已选择难度和内容分类，可以开始训练。"
@@ -365,15 +1315,21 @@ function updateSetupNotice() {
   renderSelectedPrompt();
 }
 
+function updateArticleCategoryGuideState() {
+  els.articleCategoryGuide.querySelectorAll(".category-chip").forEach((button) => {
+    button.classList.toggle("active", button.textContent === els.categorySelect.value);
+  });
+}
+
 function renderPromptInfo() {
   if (!state.current) return;
-  els.promptMeta.textContent = `${state.current.category} · ${state.current.difficulty} 星`;
+  els.promptMeta.textContent = `${state.current.category} · ${state.current.difficulty} 星 · ${state.comparableTargetChars.length} 字`;
   els.promptTitle.textContent = state.current.title;
 }
 
 function renderTarget(showFeedback) {
   if (!state.current) return;
-  const chars = [...getComparableTarget()];
+  const chars = state.comparableTargetChars;
   const inputChars = [...getEvaluationInput()];
   const visibleRange = getVisibleRange(chars, inputChars.length, getLineCharLimit());
   const visibleChars = chars.slice(visibleRange.start, visibleRange.end);
@@ -401,7 +1357,7 @@ function getVisibleRange(chars, inputLength, lineCharLimit) {
   if (!chars.length) return { start: 0, end: 0 };
   const safeIndex = Math.min(inputLength, chars.length - 1);
   const start = Math.floor(safeIndex / lineCharLimit) * lineCharLimit;
-  return { start, end: Math.min(chars.length, start + lineCharLimit) };
+  return { start, end: Math.min(chars.length, start + lineCharLimit * ARTICLE_VISIBLE_LINES) };
 }
 
 function getLineCharLimit() {
@@ -419,7 +1375,7 @@ function getEvaluationInput() {
 }
 
 function getComparableTarget() {
-  return normalizeTypingText(state.current?.text ?? "");
+  return state.comparableTarget;
 }
 
 function normalizeTypingText(text) {
@@ -485,9 +1441,8 @@ function finishSession(reason) {
 }
 
 function calculateStats() {
-  const target = getComparableTarget();
   const input = getEvaluationInput();
-  const targetChars = [...target];
+  const targetChars = state.comparableTargetChars;
   const inputChars = [...input];
   const elapsedSeconds = Math.max(1, Math.round((Date.now() - state.startedAt) / 1000));
   let errors = 0;

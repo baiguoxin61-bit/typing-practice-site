@@ -3,25 +3,125 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>影像键训 Studio</title>
-    <link rel="stylesheet" href="styles.css" />
+    <title>大鹏工作室</title>
+    <link rel="stylesheet" href="styles.css?v=20260702-click-difficulty-complete" />
   </head>
   <body>
     <main class="app-shell">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">摄影剪辑输入训练系统</p>
-          <h1>影像键训 Studio</h1>
+        <div class="brand-lockup">
+          <img class="brand-logo" src="assets/studio-logo.png" alt="工作室 Logo" />
+          <div>
+            <p class="eyebrow">摄影剪辑输入训练系统</p>
+            <h1 class="brand-title">大鹏工作室</h1>
+          </div>
         </div>
         <div class="mode-switch" role="tablist" aria-label="训练模式">
-          <button class="mode-btn active" data-mode="practice" role="tab" aria-selected="true">练习窗口</button>
-          <button class="mode-btn" data-mode="exam" role="tab" aria-selected="false">考试窗口</button>
+          <button class="mode-btn active" data-view="foundation" role="tab" aria-selected="true">键位基础</button>
+          <button class="mode-btn" data-view="article" role="tab" aria-selected="false">文章训练</button>
         </div>
       </header>
 
-      <section class="workspace">
-        <aside class="control-panel" aria-label="训练设置">
+      <section id="foundationView" class="foundation-view">
+        <aside class="foundation-panel">
           <div class="field-group">
+            <label for="foundationLesson">基础课程</label>
+            <select id="foundationLesson">
+              <option value="single">第 1 级：单键定位</option>
+              <option value="home">第 2 级：基准键位</option>
+              <option value="rows">第 3 级：上下排键</option>
+              <option value="english">第 4 级：简单英文</option>
+              <option value="pinyin">第 5 级：简单拼音</option>
+              <option value="words">第 6 级：汉字词组</option>
+              <option value="phrases">第 7 级：中文短语</option>
+              <option value="sentences">第 8 级：中文短句</option>
+            </select>
+          </div>
+          <ol id="foundationGuide" class="foundation-guide" aria-label="基础训练路线"></ol>
+          <div class="button-grid">
+            <button id="foundationStartBtn" class="primary-btn">开始基础练习</button>
+            <button id="foundationResetBtn" class="ghost-btn">重来</button>
+          </div>
+          <div class="tip-box" id="foundationTip">
+            先把左右手食指放在 F 和 J，屏幕键盘会同步显示按下的键位。
+          </div>
+        </aside>
+
+        <section class="foundation-stage">
+          <div class="status-strip foundation-status">
+            <div>
+              <span>课程</span>
+              <strong id="foundationLessonLabel">基准键</strong>
+            </div>
+            <div>
+              <span>进度</span>
+              <strong id="foundationProgressLabel">0/0</strong>
+            </div>
+            <div>
+              <span>正确</span>
+              <strong id="foundationCorrectLabel">0</strong>
+            </div>
+            <div>
+              <span>错误</span>
+              <strong id="foundationErrorLabel">0</strong>
+            </div>
+          </div>
+
+          <div class="foundation-prompt">
+            <p id="foundationHint">请点击开始基础练习。</p>
+            <div class="foundation-instruction">
+              <span>下一步</span>
+              <strong id="foundationInstruction">选择课程后开始</strong>
+            </div>
+            <div id="foundationTarget" class="foundation-target">F J</div>
+            <input
+              id="foundationInput"
+              class="foundation-input"
+              type="text"
+              placeholder="按提示输入"
+              autocomplete="off"
+              autocapitalize="off"
+              spellcheck="false"
+              disabled
+            />
+          </div>
+
+          <div class="hand-guide" aria-label="双手键位提示">
+            <div class="hand left-hand">
+              <span class="finger pinky" data-finger="left-pinky">小</span>
+              <span class="finger ring" data-finger="left-ring">无</span>
+              <span class="finger middle" data-finger="left-middle">中</span>
+              <span class="finger index" data-finger="left-index">食</span>
+              <span class="finger thumb" data-finger="left-thumb">拇</span>
+            </div>
+            <div class="hand right-hand">
+              <span class="finger thumb" data-finger="right-thumb">拇</span>
+              <span class="finger index" data-finger="right-index">食</span>
+              <span class="finger middle" data-finger="right-middle">中</span>
+              <span class="finger ring" data-finger="right-ring">无</span>
+              <span class="finger pinky" data-finger="right-pinky">小</span>
+            </div>
+          </div>
+
+          <div id="virtualKeyboard" class="virtual-keyboard" aria-label="虚拟键盘"></div>
+        </section>
+      </section>
+
+      <section id="articleView" class="workspace" hidden>
+        <aside class="control-panel" aria-label="训练设置">
+          <div class="mode-switch article-mode-switch" role="tablist" aria-label="文章训练模式">
+            <button class="article-mode-btn active" data-mode="practice" role="tab" aria-selected="true">练习窗口</button>
+            <button class="article-mode-btn" data-mode="exam" role="tab" aria-selected="false">考试窗口</button>
+          </div>
+
+          <button id="classicalQuickBtn" class="featured-category-btn" type="button">
+            <span>古文练习</span>
+            <strong>岳阳楼记、陋室铭等 10 篇</strong>
+          </button>
+
+          <div id="articleCategoryGuide" class="article-category-guide" aria-label="文章分类快捷切换"></div>
+
+          <div class="field-group" hidden>
             <label for="categorySelect">内容分类</label>
             <select id="categorySelect">
               <option value="">请选择内容分类</option>
@@ -31,10 +131,10 @@
           <div class="field-group">
             <label for="difficultyRange">难度星级</label>
             <div class="difficulty-row">
-              <input id="difficultyRange" type="range" min="0" max="10" value="0" />
+              <input id="difficultyRange" class="visually-hidden" type="range" min="0" max="10" value="0" />
               <strong id="difficultyLabel">请选择</strong>
             </div>
-            <div id="starMeter" class="star-meter" aria-hidden="true"></div>
+            <div id="starMeter" class="star-meter" aria-label="难度星级快捷选择"></div>
           </div>
 
           <div id="setupNotice" class="setup-notice" role="status">
@@ -123,7 +223,7 @@
         </section>
       </section>
 
-      <section class="results-band">
+      <section id="resultsBand" class="results-band" hidden>
         <div class="result-panel">
           <div>
             <p class="eyebrow">本次结果</p>
@@ -141,6 +241,6 @@
       </section>
     </main>
 
-    <script src="app.js"></script>
+    <script src="app.js?v=20260702-click-difficulty-complete"></script>
   </body>
 </html>
